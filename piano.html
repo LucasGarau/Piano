@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="flex-container">
+<h1>Score Finder</h1>
+        <div class="flex-item:nth-child">
+    <ul class="set">
+        <li onclick=" jsNota(174.614)" class="white do"></li>
+        <li onclick=" jsNota(184.997)" class="black as"></li>
+        <li onclick=" jsNota(195.998)" class="white a"></li>
+        <li onclick=" jsNota(207.652)" class="black gs"></li>
+        <li onclick=" jsNota(220.000)" class="white a"></li>
+        <li onclick=" jsNota(246.942)" class="white f"></li>
+        <li onclick=" jsNota(233.082)" class="black fs"></li>
+        <li onclick=" jsNota(261.626)" class="white e"></li>
+        <li onclick=" jsNota(277.183)" class="black ds"></li>
+        <li onclick=" jsNota(293.665)" class="white d"></li>
+        <li onclick=" jsNota(311.127)" class="black cs"></li>
+        <li onclick=" jsNota(329.628)" class="white c"></li>
+        <li onclick=" jsNota(329.628)" class="white c"></li>
+        
+</ul>
+</div>
+
+<div class="search">
+    CERCANT...
+<br>
+<br>
+    Do re mi fa
+<br>
+    <button>Esborrar</button>
+<br>
+<br>
+
+    <h2>RESULTATS:</h2>
+<br>
+Sant an toni y el dimoni <button> Reproduir canso</button><br>
+Lletra
+<br>
+La balanguera             <button> Reproduir canso</button><br>
+Lletra
+
+</div>
+</div>
+<script>
+    var context= new AudioContext();
+ 
+ function jsNota(frecuencia){
+         var o= context.createOscillator();
+         g=context.createGain();
+         o.connect(g);
+         o.type="sawtooth";
+         o.frequency.value=frecuencia;
+         g.connect(context.destination);
+         o.start(0);
+         g.gain.exponentialRampToValueAtTime(0.00001,context.currentTime +1.5);
+     }
+</script>
+</body>
+</html>
+
+
+
+  
