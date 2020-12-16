@@ -59,6 +59,9 @@
 
       async function loadPartitures() {
             const inputObject = {
+                  //http://server247.cfgs.esliceu.net/piano/nologin/score/list
+
+                  
                   "partitura":
                         [{
                               "id": 1,
@@ -132,11 +135,11 @@
             };
 
 
-            const aeroports = inputObject;
+            const partituras = inputObject;
 
 
 
-            return aeroports.partitura.map(r => new Partitura(r.id, r.titol, r.idioma));;
+            return partituras.partitura.map(r => new Partitura(r.id, r.titol, r.idioma));;
             //   return text.partitures.map(a => new Partitura(a.codi, a.titol, a.Idioma));
       }
 

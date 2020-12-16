@@ -40,10 +40,10 @@
 
     <h2>RESULTATS:</h2>
 <br>
-Sant an toni y el dimoni <button> Reproduir canso</button><br>
+Sant an toni y el dimoni <button id="Cancion1" onclick="Reproduir(1)"> Reproduir canso</button><br>
 Lletra
 <br>
-La balanguera             <button> Reproduir canso</button><br>
+La balanguera             <button id="Cancion2" onclick="Reproduir(2)"> Reproduir canso</button><br>
 Lletra
 
 </div>
@@ -137,16 +137,62 @@ function Nota(idpartitura, titol,Notes) {
  }
 
  function Reproduir(id){
-
-
+    const partitures = loadPartitures();
+            partitures.then(function (result) {
+                  timernotas(result,id);
+            });
  }
 
  async function loadPartitures(id) { 
     const aeroports = partitures;
-return aeroports.notes.map(r => new Nota(r.idpartitura, r.titol, r.Notes));;
+return aeroports.map(r => new Nota(r.idpartitura, r.titol, r.notes));;
 }
 
+function timernotas(result,id) {
+    console.log(result);
+   // console.log(result.find(x => x.idpartitura==='1').notes);
+   result.forEach(element => {
+       if (element.idpartitura===id){
+        let temps =0;
+        console.log(element);
+        max=element.Notes.length;
+        resultpartitura=element.Notes.sort((a, b) => (a.ordre) - (b.ordre));
+        clearInterval(this.interval);
+        this.interval = setInterval(function () {
+            makeSound(resultpartitura[temps].nom.toLowerCase());
+            document.querySelector("#Cancion"+id).innerHTML = temps;
+            temps++;
+            if (temps === max) {
+                stop();
+                document.querySelector("#Cancion"+id).innerHTML = "Reproduir cancion";
 
+                clearInterval(this.interval);
+            }
+        }, 1000)
+      
+       
+    }
+   });
+  
+
+       
+      
+    }
+
+    function timer2() {
+        let temps =0.00;
+        clearInterval(this.interval);
+        this.interval = setInterval(function () {
+            temps=temps+0.01;
+
+            document.querySelector("#Cancion1").innerHTML = temps;
+
+            if (temps === 10) {
+                stop();
+                clearInterval(this.interval);
+            }
+        }, 10)
+    }
 
 
 </script>
