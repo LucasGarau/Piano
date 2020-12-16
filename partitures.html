@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <meta charset='utf-8'>
+      <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+      <title>Page Title</title>
+      <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+      <script src="https://kit.fontawesome.com/faa84cae57.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+      <div class="topnav">
+            <a class="active" href="#home">Score Finder</a>
+            <a href="#contact" style="float:right">Partitures</a>
+            <a href="#about" onclick="document.getElementById('id01').style.display='block'"  style="float:right">Login</a>
+            
+      </div>
+      <br>
+      <div class="Pbutton">
+            <button id="nuevapartitura" class="center">Nova Partitura</button>
+      </div>
+   
+      <br>
+<div id="id01" class="modal">
+  
+  <form class="modal-content animate" action="/action_page.php" method="post">
+     
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <img src="icono.jpg" alt="Avatar" class="avatar">
+    </div>
+    <h1 style="text-align: center;">Login Scorefinder</h1>
+    <div class="container">
+      <label for="uname"><b>Correu Electronic</b></label>
+      <input type="text" placeholder="Enter Correu Electronic" name="Correu Electronic" required>
+
+      <label for="psw"><b>Contrasenya</b></label>
+      <input type="password" placeholder="Enter Contrasenya" name="Contrasenya" required>
+        
+      <button type="submit">Login</button>
+    </div>
+  </form>
+</div>
+<br>
+      <div class="resultat" id='resultat'></div>
+      
+</body>
+
+<script>
+
+
+      function Partitura(codi, titol, Idioma) {
+            this.codi = codi;
+            this.titol = titol;
+            this.Idioma = Idioma;
+      }
+
+
+      async function loadPartitures() {
+            const inputObject = {
+                  "partitura":
+                        [{
+                              "id": 1,
+                              "titol": "Cancion1",
+                              "idioma": 'Espanol'
+                        }, {
+                              "id": 2,
+                              "titol": "Cancion2",
+                              "idioma": "Ingles"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }]
+            };
+
+
+            const aeroports = inputObject;
+
+
+
+            return aeroports.partitura.map(r => new Partitura(r.id, r.titol, r.idioma));;
+            //   return text.partitures.map(a => new Partitura(a.codi, a.titol, a.Idioma));
+      }
+
+      function cerca(aeroports, s) {
+            return aeroports.filter(a =>
+                  a.nom.toUpperCase().includes(s.toUpperCase()) ||
+                  a.codi.toUpperCase().includes(s.toUpperCase()) ||
+                  a.ciutat.toUpperCase().includes(s.toUpperCase())
+            )
+      }
+
+
+
+      function pintar(resultat) {
+
+            const taula = document.createElement('TABLE');
+
+            const trHeader = document.createElement('TR');
+            taula.appendChild(trHeader);
+
+            const thTitol = document.createElement('TH');
+            thTitol.innerHTML = "Titol"
+            trHeader.appendChild(thTitol);
+
+            const thIdioma = document.createElement('TH');
+            thIdioma.innerHTML = "Idioma original"
+            trHeader.appendChild(thIdioma);
+
+            const thAccions = document.createElement('TH');
+            thAccions.innerHTML = "Accions"
+            trHeader.appendChild(thAccions);
+i=0;
+            resultat.forEach(r => {
+                  i++;
+                  const tr = document.createElement('TR');
+                  taula.appendChild(tr);
+
+                  const tdTitol = document.createElement('TD');
+                  tdTitol.innerHTML = r.titol
+                  tr.appendChild(tdTitol);
+
+                  const tdIdioma = document.createElement('TD');
+                  tdIdioma.innerHTML = r.Idioma
+                  tr.appendChild(tdIdioma);
+
+                  const tdAccions = document.createElement('TD');
+                  tdAccions.innerHTML = '<button ><i class="fas fa-edit">  </i> Editar</button><button onclick="borrar('+r.codi+')"><i class="fas fa-trash-alt"></i>Borrar </button>'
+                  tr.appendChild(tdAccions);
+
+            })
+
+            document.querySelector('#resultat').innerHTML = "";
+            document.querySelector('#resultat').appendChild(taula);
+      }
+
+      function borrar(numero) {
+            var r = confirm("Quiere borrar el elemento "+numero+" ?");
+            if (r == true) {
+                  alert("Elemento borrado");
+            } else {
+                  alert("Cancelado");
+            }
+      }
+
+
+
+
+      (function () {
+            const partitures = loadPartitures();
+            partitures.then(function (result) {
+                  pintar(result);
+            });
+      })()
+
+
+      var modal = document.getElementById('id01');
+
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+</script>
+
+</html>
+
+</html>
