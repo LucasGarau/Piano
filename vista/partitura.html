@@ -3,15 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
     <title>Document</title>
 </head>
 <body>
-    <form action="/action_page.php">
-        <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value="John"><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname" value="Doe"><br><br>
+
+    <div class="topnav">
+        <a class="active" href="#home">Score Finder</a>
+        <a onclick=" window.location ='partitures.html'" style="float:right">Partitures</a>
+        <a href="#about" onclick="document.getElementById('id01').style.display='block'"  style="float:right">Login</a>
+        
+  </div>
+  <br>
+    <form action=http://www.esliceu.com method="POST">
+        <label for="titulo">Titulo:</label><br>
+        <input type="text" name="titulo" value="" required><br>
+<br>
+        <label for="idioma">Idioma:</label><br>
+
+        <div id="selectidioma">
+            <select name="idioma" required>
+                <option value="Catala">Catala</option>
+                <option value="Espanyol">Espanyol</option>
+                <option value="English">English</option>
+              </select>
+        </div>
+        
+<br>
+<br> 
+<label for="lletra">Lletra:</label><br>
+        <textarea type="text" name="lletra" required>
+
+        </textarea>
+
+<br>
+<br>
+        <label for="catala">Traducio Catala:</label><br>
+        <textarea type="text" name="catala" value="">
+</textarea>
+        <input type="hidden" name="id" value=""><br>
+        
         <input type="submit" value="Submit">
       </form>
 </body>
+
+<script>
+
+function Idioma(codi, nom) {
+    this.codi = codi;
+    this.nom = nom;
+}
+
+
+async function  getidiomes() {
+fetchidiomas= await fetch("http://server247.cfgs.esliceu.net/piano/nologin/google/translate/languages", {
+    method:   "POST"});
+    const idiomas = await fetchidiomas.json();
+    return idiomas.map(r => new Idioma(r.code, r.name));
+}
+
+function pintar(resultat) {
+            const select = document.createElement('select');
+            resultat.forEach(r => {
+                  const option = document.createElement('option');
+                  option.value=r.codi
+                  option.innerHTML = r.nom
+                  select.appendChild(option);
+            })
+            document.querySelector('#selectidioma').innerHTML = "";
+            document.querySelector('#selectidioma').appendChild(select);
+      }
+
+      async function  get(id) {
+fetchidiomas= await fetch("http://server247.cfgs.esliceu.net/piano/nologin/score/get", {
+    method:   "POST"});
+    const idiomas = await fetchidiomas.json();
+    return idiomas.map(r => new Idioma(r.code, r.name));
+} 
+
+async function  erase(id) {
+fetchidiomas= await fetch("http://server247.cfgs.esliceu.net/piano/nologin/score/delete", {
+    method:   "POST",
+    parameters});
+    const idiomas = await fetchidiomas.json();
+    return idiomas.map(r => new Idioma(r.code, r.name));
+}
+
+async function  save() {
+
+    var score = {
+        idpartitura: "",
+        name: "Test111",
+        partituraoriginal: 'Test',
+        partituratraduccio: "Test",
+        idiomaoriginal:'ca',
+        idiomatraducció:'ca',
+        notes:[]
+
+};
+
+savepartitura= await fetch("http://server247.cfgs.esliceu.net/piano/nologin/score/save", {
+    method:   "POST",
+    parameters: score});
+    const idiomas = await savepartitura.text();
+}
+      
+
+      (function () {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get('id')
+        const idiomas = getidiomes();
+      idiomas.then(function (result) {
+                  pintar(result);
+            });
+}());
+    
+
+</script>
 </html>

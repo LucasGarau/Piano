@@ -32,9 +32,12 @@
     CERCANT...
 <br>
 <br>
-    Do re mi fa
+<div id="Notestocadas">
+
+</div>
+
 <br>
-    <button>Esborrar</button>
+    <button onclick="Esborrar()">Esborrar</button>
 <br>
 <br>
 
@@ -47,7 +50,7 @@ La balanguera             <button id="Cancion2" onclick="Reproduir(2)"> Reprodui
 Lletra
 
 </div>
-</div>
+
 <script>
 
 function Nota(idpartitura, titol,Notes) {
@@ -56,25 +59,107 @@ function Nota(idpartitura, titol,Notes) {
             this.Notes = Notes;
       }
 
-      function cerca(aeroports, s) {
-            return aeroports.filter(a =>
-                  a.nom.toUpperCase().includes(s.toUpperCase()) ||
-                  a.codi.toUpperCase().includes(s.toUpperCase()) ||
-                  a.ciutat.toUpperCase().includes(s.toUpperCase())
-            )
-      }
+      
 
+
+//Buscador en base al input de el piano
       async function cercainput () {
             const partitures = await loadAeroports();
-            document.querySelector("#cercador").addEventListener("input", function () {
+            document.querySelector("#Notestocadas").addEventListener("input", function () {
                 const search = this.value;
-                const resultat = cerca(aeroports, search);
+                const resultat = cerca(partitures, search);
                 pintar3(resultat);
                
             })
         }
       
-    var partitures = [
+
+
+//Hace sonar el piano
+ function makeSound(id){
+    var note = new Audio('../audio/'+id+'.ogg');
+    note.play();
+    document.querySelector("#Notestocadas").innerHTML+=id + " ";
+
+ }
+
+ //Borra la parte de las notas tocadas
+ function Esborrar(){
+    document.querySelector("#Notestocadas").innerHTML="";
+ }
+
+ //Carga las partituras y se las pasa a la funcion de tocar
+ function Reproduir(id){
+    const partitures = loadPartitures();
+            partitures.then(function (result) {
+                  timernotas(result,id);
+            });
+ }
+
+ //Carga las partituras de la array local y despues de la base de datos.
+ async function loadPartitures(id) {  
+    const aeroports = partitures;
+return aeroports.map(r => new Nota(r.idpartitura, r.titol, r.notes));;
+}
+
+
+//Timer per el segons que tambe fa la funcio de tocar una nota cada vegada que pasa un segon , satura en el momento que arriba al final.
+function timernotas(result,id) {
+
+   result.forEach(element => {
+       if (element.idpartitura===id){
+
+        let temps =0;
+        max=element.Notes.length;
+
+        resultpartitura=element.Notes.sort((a, b) => (a.ordre) - (b.ordre));
+
+        clearInterval(this.interval);
+
+        this.interval = setInterval(function () {
+            makeSound(resultpartitura[temps].nom.toLowerCase());
+            document.querySelector("#Cancion"+id).innerHTML = temps;
+
+            temps++;
+            if (temps === max) {
+                stop();
+                document.querySelector("#Cancion"+id).innerHTML = "Reproduir cancion";
+                clearInterval(this.interval);
+            }
+        }, 1000)
+      
+       
+    }
+   });
+  
+
+       
+      
+    }
+//TImer per els milisegonds
+    function timer2() {
+        let temps =0.00;
+        clearInterval(this.interval);
+        this.interval = setInterval(function () {
+            temps=temps+0.01;
+
+            document.querySelector("#Cancion1").innerHTML = temps;
+
+            if (temps === 10) {
+                stop();
+                clearInterval(this.interval);
+            }
+        }, 10)
+    }
+
+    (function () {
+
+        
+})();
+
+
+//Array de proba de la funcion de sonar de las partituras.
+var partitures = [
 {
 "notes": [
 {"idnota": 118, "figura": "NEGRE", "alteracio": "NORMAL", "nom":
@@ -130,71 +215,14 @@ function Nota(idpartitura, titol,Notes) {
 }
 ]
 
- function makeSound(id){
-    var note = new Audio('audio/'+id+'.ogg');
-    note.play();
 
- }
-
- function Reproduir(id){
-    const partitures = loadPartitures();
-            partitures.then(function (result) {
-                  timernotas(result,id);
-            });
- }
-
- async function loadPartitures(id) { 
-    const aeroports = partitures;
-return aeroports.map(r => new Nota(r.idpartitura, r.titol, r.notes));;
-}
-
-function timernotas(result,id) {
-    console.log(result);
-   // console.log(result.find(x => x.idpartitura==='1').notes);
-   result.forEach(element => {
-       if (element.idpartitura===id){
-        let temps =0;
-        console.log(element);
-        max=element.Notes.length;
-        resultpartitura=element.Notes.sort((a, b) => (a.ordre) - (b.ordre));
-        clearInterval(this.interval);
-        this.interval = setInterval(function () {
-            makeSound(resultpartitura[temps].nom.toLowerCase());
-            document.querySelector("#Cancion"+id).innerHTML = temps;
-            temps++;
-            if (temps === max) {
-                stop();
-                document.querySelector("#Cancion"+id).innerHTML = "Reproduir cancion";
-
-                clearInterval(this.interval);
-            }
-        }, 1000)
-      
-       
+function cerca(partitura, s) {
+          return partitura.filter(a =>
+                a.nom.toUpperCase().includes(s.toUpperCase()) ||
+                a.codi.toUpperCase().includes(s.toUpperCase()) ||
+                a.ciutat.toUpperCase().includes(s.toUpperCase())
+          )
     }
-   });
-  
-
-       
-      
-    }
-
-    function timer2() {
-        let temps =0.00;
-        clearInterval(this.interval);
-        this.interval = setInterval(function () {
-            temps=temps+0.01;
-
-            document.querySelector("#Cancion1").innerHTML = temps;
-
-            if (temps === 10) {
-                stop();
-                clearInterval(this.interval);
-            }
-        }, 10)
-    }
-
-
 </script>
 </body>
 </html>

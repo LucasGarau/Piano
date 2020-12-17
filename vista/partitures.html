@@ -58,105 +58,23 @@
 
 
       async function loadPartitures() {
-            const inputObject = {
-                  //http://server247.cfgs.esliceu.net/piano/nologin/score/list
-
-                  
-                  "partitura":
-                        [{
-                              "id": 1,
-                              "titol": "Cancion1",
-                              "idioma": 'Espanol'
-                        }, {
-                              "id": 2,
-                              "titol": "Cancion2",
-                              "idioma": "Ingles"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }, {
-                              "id": 3,
-                              "titol": "Cancion3",
-                              "idioma": "Espanol"
-                        }]
-            };
-
-
-            const partituras = inputObject;
-
-
-
-            return partituras.partitura.map(r => new Partitura(r.id, r.titol, r.idioma));;
-            //   return text.partitures.map(a => new Partitura(a.codi, a.titol, a.Idioma));
+          fetchtnotas2= await fetch("http://server247.cfgs.esliceu.net/piano/nologin/score/list", {
+                    method:   "POST"});
+                    const partituras = await fetchtnotas2.json();
+                    return partituras.map(r => new Partitura(r.idpartitura, r.titol, r.idiomaoriginal));;
       }
 
-      function cerca(aeroports, s) {
+        function cerca(aeroports, s) {
             return aeroports.filter(a =>
-                  a.nom.toUpperCase().includes(s.toUpperCase()) ||
-                  a.codi.toUpperCase().includes(s.toUpperCase()) ||
-                  a.ciutat.toUpperCase().includes(s.toUpperCase())
+                a.nom.toUpperCase().includes(s.toUpperCase()) ||
+                a.codi.toUpperCase().includes(s.toUpperCase()) ||
+                a.ciutat.toUpperCase().includes(s.toUpperCase())
             )
-      }
-
+        }
 
 
       function pintar(resultat) {
-
             const taula = document.createElement('TABLE');
-
             const trHeader = document.createElement('TR');
             taula.appendChild(trHeader);
 
@@ -171,7 +89,7 @@
             const thAccions = document.createElement('TH');
             thAccions.innerHTML = "Accions"
             trHeader.appendChild(thAccions);
-i=0;
+            i=0;
             resultat.forEach(r => {
                   i++;
                   const tr = document.createElement('TR');
@@ -186,8 +104,10 @@ i=0;
                   tr.appendChild(tdIdioma);
 
                   const tdAccions = document.createElement('TD');
-                  tdAccions.innerHTML = '<button ><i class="fas fa-edit">  </i> Editar</button><button onclick="borrar('+r.codi+')"><i class="fas fa-trash-alt"></i>Borrar </button>'
+                  tdAccions.innerHTML = '<button onclick="editar('+r.codi+')" ><i class="fas fa-edit">  </i> Editar</button><button onclick="borrar('+r.codi+')"><i class="fas fa-trash-alt"></i>Borrar </button>'
                   tr.appendChild(tdAccions);
+
+                
 
             })
 
@@ -204,25 +124,53 @@ i=0;
             }
       }
 
+      function editar(id) {
+            window.location = "partitura.html?id="+id;
+      }
 
 
 
       (function () {
+
+            window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+            const testpartituras = {
+                  
+                  "partitura":
+                        [{
+                              "id": 1,
+                              "titol": "Cancion1",
+                              "idioma": 'Espanol'
+                        }, {
+                              "id": 2,
+                              "titol": "Cancion2",
+                              "idioma": "Ingles"
+                        }, {
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        },{
+                              "id": 3,
+                              "titol": "Cancion3",
+                              "idioma": "Espanol"
+                        }]
+            };
+            var modal = document.getElementById('id01');
             const partitures = loadPartitures();
             partitures.then(function (result) {
                   pintar(result);
             });
       })()
 
+   
 
-      var modal = document.getElementById('id01');
+     
 
 
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+
 
 
 </script>
